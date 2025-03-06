@@ -454,7 +454,7 @@ export const main = async ({
   }
 
   // Clone the target repo
-  await exec(`git clone "${config.repo}" "${REPO_TEMP}"`, {
+  await exec(`git clone --depth 1 "${config.repo}" "${REPO_TEMP}"`, {
     log,
     env: childEnv,
   }).catch((err) => {

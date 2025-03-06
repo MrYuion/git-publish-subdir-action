@@ -292,7 +292,7 @@ const main = async ({ env = process.env, log, }) => {
         log.log(`Private key added`);
     }
     // Clone the target repo
-    await (0, exports.exec)(`git clone "${config.repo}" "${REPO_TEMP}"`, {
+    await (0, exports.exec)(`git clone --depth 1 "${config.repo}" "${REPO_TEMP}"`, {
         log,
         env: childEnv,
     }).catch((err) => {
