@@ -473,11 +473,14 @@ export const main = async ({
 
   if (!config.squashHistory) {
     // Fetch branch if it exists
-    await exec(`git fetch -u origin ${config.branch}:${config.branch}`, {
-      log,
-      env: childEnv,
-      cwd: REPO_TEMP,
-    }).catch((err) => {
+    await exec(
+      `git fetch --depth 1 -u origin ${config.branch}:${config.branch}`,
+      {
+        log,
+        env: childEnv,
+        cwd: REPO_TEMP,
+      }
+    ).catch((err) => {
       const s = err.toString();
       /* istanbul ignore if */
       if (s.indexOf("Couldn't find remote ref") === -1) {
