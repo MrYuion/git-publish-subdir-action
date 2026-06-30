@@ -569,10 +569,16 @@ export const main = async ({
     absolute: true,
     dot: true,
     followSymbolicLinks: false,
+    // Include symlinks (and dirs) in the stream. With the default onlyFiles:true,
+    // fast-glob lstats entries and drops symlinks, leaving them undeleted - so a
+    // symlink committed on the source branch survives the clear and gets re-added.
+    onlyFiles: false,
     cwd: REPO_TEMP,
   });
-  // Delete all files from the filestream
+  // Delete all files (and symlinks) from the filestream, skipping directories.
   for await (const entry of filesToDelete) {
+    const stat = await fs.lstat(entry);
+    if (stat.isDirectory()) continue;
     await fs.unlink(entry);
   }
   const folder = path.resolve(process.cwd(), config.folder);
